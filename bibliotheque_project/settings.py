@@ -1,26 +1,13 @@
-"""
-Django settings for bibliotheque_project — API Bibliothèque Complète
-Prêt pour le déploiement (Render, Railway, Heroku, VPS...)
-"""
-
 from pathlib import Path
 from datetime import timedelta
 import os
-import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# ─── SÉCURITÉ ────────────────────────────────────────────────────────────────
-SECRET_KEY = os.environ.get(
-    'SECRET_KEY',
-    'dev-secret-key-change-in-production-abc123xyz789'
-)
-
+SECRET_KEY = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-production-abc123xyz789')
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
-
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
-# ─── APPLICATIONS ─────────────────────────────────────────────────────────────
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -67,19 +54,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'bibliotheque_project.wsgi.application'
 
-# ─── BASE DE DONNÉES ──────────────────────────────────
-
-
-DATABASE_URL = os.environ.get('DATABASE_URL')
-if DATABASE_URL:
-    DATABASES = {'default': dj_database_url.parse(DATABASE_URL)}
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
+}
+
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -95,10 +76,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# ─── DJANGO REST FRAMEWORK ────────────────────────────────────────────────────
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -125,7 +104,6 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
-# ─── JWT ──────────────────────────────────────────────────────────────────────
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
@@ -134,10 +112,9 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
-# ─── SPECTACULAR (Swagger / OpenAPI) ─────────────────────────────────────────
 SPECTACULAR_SETTINGS = {
     'TITLE': 'API Bibliotheque',
-    'DESCRIPTION': 'API REST complete de gestion de bibliotheque. JWT (Bearer token). Fonctionnalites : Auteurs, Livres, Tags, Emprunts, Profils lecteurs.',
+    'DESCRIPTION': 'API REST complete de gestion de bibliotheque.',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
 }
